@@ -1,0 +1,21 @@
+# --- Core automation ---
+Appium-Python-Client==4.1.0
+selenium==4.25.0
+
+# --- Test runner ---
+pytest==8.3.3
+pytest-html==4.1.1
+pytest-xdist==3.6.1
+pytest-rerunfailures==14.0
+allure-pytest==2.13.5
+
+# --- Test data / config ---
+openpyxl==3.1.5
+python-dotenv==1.0.1
+
+# --- Utilities ---
+Pillow==10.4.0
+requests==2.32.3
+
+# --- Non-functional checks ---
+axe-selenium-python==2.1.6
