@@ -1,0 +1,28 @@
+# --- Secrets: NEVER commit the real .env ---
+.env
+*.pem
+*.key
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# --- Reports / artifacts ---
+reports/
+screenshots/
+downloads/
+logs/
+allure-report/
+
+# --- APK (large binary, distributed separately) ---
+*.apk
+
+# --- IDE / OS ---
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store

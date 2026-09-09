@@ -1,0 +1,50 @@
+name: TestAutothon CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  web:
+    name: web / ${{ matrix.browser }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox, edge]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate Excel test data
+        run: python scripts/generate_testdata.py
+
+      - name: Run web tests
+        env:
+          BASE_URL: https://stg.gajab.com
+          TEST_MOBILE_NUMBER: ${{ secrets.TEST_MOBILE_NUMBER }}
+          DEFAULT_OTP: ${{ secrets.DEFAULT_OTP }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: pytest -m web --browser ${{ matrix.browser }} --headless --reruns 1
+
+      - name: Publish reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-${{ matrix.browser }}
+          path: reports/
